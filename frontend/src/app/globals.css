@@ -1,0 +1,288 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-space-grotesk);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+}
+
+/* ═══════════════════════════════════════════════════════
+   COSMIC GLASSMORPHISM — Design Tokens
+   ═══════════════════════════════════════════════════════ */
+
+:root,
+.dark {
+  --radius: 0.75rem;
+
+  /* Deep Obsidian Space Palette */
+  --background: oklch(0.08 0.02 275);
+  --foreground: oklch(0.95 0.005 270);
+
+  --card: oklch(0.12 0.02 275 / 0.4);
+  --card-foreground: oklch(0.95 0.005 270);
+
+  --popover: oklch(0.10 0.02 275 / 0.8);
+  --popover-foreground: oklch(0.95 0.005 270);
+
+  --primary: oklch(0.60 0.28 280);
+  --primary-foreground: oklch(0.98 0.005 270);
+
+  --secondary: oklch(0.16 0.04 275);
+  --secondary-foreground: oklch(0.95 0.005 270);
+
+  --muted: oklch(0.18 0.03 275);
+  --muted-foreground: oklch(0.60 0.02 270);
+
+  --accent: oklch(0.55 0.25 290);
+  --accent-foreground: oklch(0.98 0 0);
+
+  --destructive: oklch(0.55 0.22 20);
+  --border: oklch(0.98 0.005 270 / 0.06);
+  --input: oklch(0.98 0.005 270 / 0.08);
+  --ring: oklch(0.60 0.28 280);
+
+  --sidebar: oklch(0.10 0.02 275 / 0.6);
+  --sidebar-foreground: oklch(0.95 0.005 270);
+  --sidebar-primary: oklch(0.60 0.28 280);
+  --sidebar-primary-foreground: oklch(0.98 0.005 270);
+  --sidebar-accent: oklch(0.18 0.05 275);
+  --sidebar-accent-foreground: oklch(0.95 0.005 270);
+  --sidebar-border: oklch(0.98 0.005 270 / 0.06);
+  --sidebar-ring: oklch(0.60 0.28 280);
+
+  /* Cosmic custom tokens */
+  --cosmic-violet: oklch(0.55 0.28 290);
+  --cosmic-indigo: oklch(0.45 0.25 280);
+  --cosmic-deep: oklch(0.08 0.02 275);
+  --cosmic-glow: oklch(0.65 0.30 285);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   COSMIC GLASS UTILITIES
+   ═══════════════════════════════════════════════════════ */
+
+.cosmic-glass {
+  background: rgba(0, 0, 0, 0.40);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.cosmic-glass-strong {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cosmic-glass-subtle {
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.cosmic-glass-panel {
+  background: linear-gradient(145deg, rgba(15, 15, 25, 0.6), rgba(5, 5, 10, 0.8));
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+}
+
+/* The iconic horizon glow */
+.horizon-glow {
+  position: absolute;
+  bottom: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140%;
+  height: 70vh;
+  background: radial-gradient(ellipse at center,
+      oklch(0.35 0.25 280 / 0.45) 0%,
+      oklch(0.25 0.20 290 / 0.25) 30%,
+      oklch(0.15 0.10 285 / 0.10) 55%,
+      transparent 75%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Cosmic title glow */
+.cosmic-title {
+  font-family: var(--font-display);
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(220, 210, 255, 0.95) 40%,
+      oklch(0.70 0.25 290) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(0 0 40px oklch(0.60 0.30 285 / 0.5)) drop-shadow(0 0 80px oklch(0.50 0.25 290 / 0.3));
+  letter-spacing: -0.04em;
+}
+
+/* Pulsing glow border for loading state */
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(1.01);
+  }
+}
+
+.input-glow-pulse {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Subtle shimmer effect for hover states */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.cosmic-shimmer:hover {
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out;
+}
+
+/* Grain overlay for depth */
+.grain-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+}
+
+/* ═══════════════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+}
+
+/* ═══════════════════════════════════════════════════════
+   MARKDOWN CONTENT STYLING
+   ═══════════════════════════════════════════════════════ */
+
+.markdown-content pre {
+  background: rgba(6, 6, 15, 0.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.markdown-content code:not(pre code) {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 5px;
+  padding: 2px 6px;
+  font-size: 0.85em;
+}
+
+.markdown-content a {
+  color: oklch(0.70 0.20 285);
+  text-decoration-color: oklch(0.70 0.20 285 / 0.3);
+}
+
+.markdown-content a:hover {
+  color: oklch(0.80 0.22 285);
+  text-decoration-color: oklch(0.80 0.22 285 / 0.6);
+}
+
+.markdown-content blockquote {
+  border-left-color: oklch(0.55 0.25 285 / 0.5);
+  background: rgba(0, 0, 0, 0.2);
+}
