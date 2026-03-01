@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { FirebaseProvider } from "@/components/FirebaseProvider";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -36,7 +38,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${outfit.variable} antialiased`}
       >
         <ThemeProvider>
-          {children}
+          <FirebaseProvider>
+            {children}
+          </FirebaseProvider>
+          <Toaster richColors position="bottom-right" theme="system" />
         </ThemeProvider>
       </body>
     </html>

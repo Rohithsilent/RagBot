@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { Upload, File, CheckCircle2, X, FolderOpen } from "lucide-react";
-import { useRagBackend } from "@/hooks/useRagBackend";
+import { toast } from "sonner";
 
-export function UploadZone() {
+interface UploadZoneProps {
+    onFileUpload: (files: File[]) => Promise<{ success: boolean; message: string } | undefined>;
+    onUploadComplete?: () => void;
+}
+
+export function UploadZone({ onFileUpload, onUploadComplete }: UploadZoneProps) {
     const [isDragging, setIsDragging] = useState(false);
     const [files, setFiles] = useState<File[]>([]);
     const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "success" | "error">("idle");
-    const { handleFileUpload } = useRagBackend();
 
     const handleDragOver = (e: React.DragEvent) => {
         e.preventDefault();
@@ -18,23 +22,36 @@ export function UploadZone() {
     };
 
     const processFiles = async (newFiles: File[]) => {
-        const pdfs = newFiles.filter(f => f.type === 'application/pdf' || f.name.endsWith('.pdf'));
-        if (pdfs.length === 0) return;
+        const validFiles = newFiles.filter(f => {
+            const ext = f.name.toLowerCase();
+            return ext.endsWith('.pdf') || ext.endsWith('.txt') || ext.endsWith('.csv') || ext.endsWith('.docx') || ext.endsWith('.ppt') || ext.endsWith('.pptx');
+        });
+        if (validFiles.length === 0) return;
 
-        setFiles(prev => [...prev, ...pdfs]);
+        setFiles(prev => [...prev, ...validFiles]);
         setUploadStatus("uploading");
 
         try {
-            const result = await handleFileUpload(pdfs);
+            const result = await onFileUpload(validFiles);
             if (result?.success) {
                 setUploadStatus("success");
+                toast.success("Documents uploaded", {
+                    description: `${validFiles.length} file${validFiles.length > 1 ? "s" : ""} indexed successfully.`,
+                });
+                onUploadComplete?.();
                 setTimeout(() => setUploadStatus("idle"), 3000);
             } else {
                 setUploadStatus("error");
+                toast.error("Upload failed", {
+                    description: result?.message || "Please try again.",
+                });
                 setTimeout(() => setUploadStatus("idle"), 5000);
             }
         } catch {
             setUploadStatus("error");
+            toast.error("Upload failed", {
+                description: "An unexpected error occurred.",
+            });
             setTimeout(() => setUploadStatus("idle"), 5000);
         }
     };
@@ -53,7 +70,7 @@ export function UploadZone() {
     };
 
     return (
-        <div className="flex flex-col gap-3 h-full p-5 text-sm w-full">
+        <div className="flex flex-col gap-3 p-5 text-sm w-full">
             {/* Section Title */}
             <div className="flex items-center gap-2.5 mb-2 px-1">
                 <div className="p-1.5 rounded-lg bg-gradient-to-br from-violet-500/20 to-indigo-500/10 border border-violet-500/20 shadow-[0_0_12px_rgba(139,92,246,0.15)]">
@@ -84,7 +101,7 @@ export function UploadZone() {
                     <Upload className={`w-6 h-6 transition-colors duration-400 ${isDragging ? "text-violet-300" : "dark:text-slate-400 text-slate-500"}`} />
                 </div>
                 <p className="dark:text-slate-300 text-slate-700 font-medium text-[0.85rem] tracking-wide mb-1 z-10">
-                    Drag & Drop PDFs
+                    Drag & Drop Files
                 </p>
                 <p className="dark:text-slate-500 text-slate-400 text-[0.7rem] uppercase tracking-wider font-semibold mb-4 z-10">
                     or click to browse
@@ -101,7 +118,7 @@ export function UploadZone() {
                     <input
                         type="file"
                         className="hidden"
-                        accept=".pdf"
+                        accept=".pdf,.txt,.csv,.docx,.ppt,.pptx"
                         multiple
                         onChange={handleFileChange}
                     />
@@ -132,11 +149,11 @@ export function UploadZone() {
                 </div>
             )}
 
-            {/* File List */}
+            {/* File List (current session uploads) */}
             <div className="flex flex-col gap-1.5 overflow-y-auto mt-1">
                 {files.length > 0 && (
                     <span className="text-[10px] font-semibold dark:text-slate-600 text-slate-400 uppercase tracking-widest mb-1">
-                        Uploaded Context
+                        Just Uploaded
                     </span>
                 )}
                 {files.map((file, i) => (

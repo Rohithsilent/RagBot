@@ -115,7 +115,57 @@ Testable via Postman or directly from the Streamlit frontend.
 - [LangChain](https://www.langchain.com/)
 - [ChromaDB](https://www.trychroma.com/)
 - [Groq](https://groq.com/)
-- [Streamlit](https://streamlit.io/)
+- [Streamlit](https://streamlit.io/) (Legacy)
+- [Next.js & Vercel](https://vercel.com/) (Production UI)
+- [Firebase](https://firebase.google.com/)
+
+---
+
+## 🚢 Production Deployment
+
+RagBot-2.0 is fully decoupled, meaning the frontend and backend are deployed separately.
+
+### 1. Frontend (Next.js & Vercel)
+Deploy the `/frontend` directory seamlessly on **Vercel**:
+1. Connect your repository to Vercel and set the Root Directory to `frontend`.
+2. Add the following **Environment Variables** in Vercel:
+   ```env
+   NEXT_PUBLIC_API_URL=https://your-backend-url.onrender.com
+   NEXT_PUBLIC_FIREBASE_API_KEY=xxx
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=xxx
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=xxx
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=xxx
+   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=xxx
+   NEXT_PUBLIC_FIREBASE_APP_ID=xxx
+   NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=xxx
+   ```
+3. Deploy.
+
+### 2. Backend (FastAPI & Render/Heroku)
+Deploy the `/server` directory to a platform like **Render**, **Railway**, or **Heroku**:
+1. Ensure the platform uses the provided `Procfile` (`web: uvicorn main:app --host 0.0.0.0 --port $PORT`).
+2. Set the Root Directory to `server`.
+3. Add the following **Environment Variables**:
+   ```env
+   PINECONE_API_KEY=xxx
+   PINECONE_INDEX_NAME=xxx
+   GROQ_API_KEY=xxx
+   FRONTEND_URL=https://your-frontend-url.vercel.app  # Important for CORS
+   ```
+4. Deploy.
+
+### 3. Database (Firebase Firestore Rules)
+Deploy the following `firestore.rules` snippet to secure your active chat sessions and documents:
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /sessions/{sessionId} {
+      allow read, write: if request.auth != null && request.auth.uid == resource.data.userId || request.auth.uid == request.resource.data.userId;
+    }
+  }
+}
+```
 
 ---
 

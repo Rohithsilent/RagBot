@@ -1,27 +1,27 @@
 import logging
-
+import sys
 
 def setup_logger(name="ragbot"):
-
-    logger=logging.getLogger(name)
+    logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
 
     # Console handler
-    ch=logging.StreamHandler()
+    ch = logging.StreamHandler(sys.stdout)
     ch.setLevel(logging.DEBUG)
 
-    # formatter
+    # File handler for production logging
+    fh = logging.FileHandler("app.log")
+    fh.setLevel(logging.INFO)
 
-    formatter=logging.Formatter("[%(asctime)s] [%(levelname)s] -  %(message)s ")
+    # formatter
+    formatter = logging.Formatter("[%(asctime)s] [%(levelname)s] -  %(message)s ")
     ch.setFormatter(formatter)
+    fh.setFormatter(formatter)
 
     if not logger.hasHandlers():
         logger.addHandler(ch)
+        logger.addHandler(fh)
 
     return logger
 
-
-
-
-
-logger=setup_logger()
+logger = setup_logger()

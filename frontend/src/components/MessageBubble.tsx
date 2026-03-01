@@ -15,21 +15,21 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
             transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
             className={`flex w-full ${isUser ? "justify-end" : "justify-start"} mb-5`}
         >
-            <div className={`flex gap-3 max-w-[75%] ${isUser ? "flex-row-reverse" : "flex-row"}`}>
+            <div className={`flex gap-2 sm:gap-3 ${isUser ? "max-w-[85%] sm:max-w-[75%] flex-row-reverse" : "max-w-[95%] sm:max-w-[75%] flex-row"}`}>
                 {/* Avatar */}
-                <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mt-0.5 ${isUser
+                <div className={`flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center mt-0.5 ${isUser
                     ? "bg-gradient-to-br from-violet-500 to-indigo-600"
                     : "cosmic-glass dark:border dark:border-white/[0.15] border border-black/[0.08]"
                     }`}>
                     {isUser
-                        ? <User className="w-3.5 h-3.5 text-white" />
-                        : <Bot className="w-3.5 h-3.5 dark:text-violet-300 text-violet-500" />
+                        ? <User className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
+                        : <Bot className="w-3 h-3 sm:w-3.5 sm:h-3.5 dark:text-violet-300 text-violet-500" />
                     }
                 </div>
 
                 {/* Bubble */}
                 <div className={`
-                    relative px-5 py-4 text-[0.95rem] leading-relaxed rounded-2xl border transition-colors duration-300
+                    relative px-3 py-2.5 sm:px-5 sm:py-4 text-[0.85rem] sm:text-[0.95rem] leading-relaxed rounded-2xl border transition-colors duration-300
                     ${isUser
                         ? "bg-gradient-to-br from-violet-600/90 to-indigo-700/90 text-white/95 rounded-tr-sm border-violet-400/20"
                         : "cosmic-glass-panel rounded-tl-sm dark:text-slate-200 text-slate-800 dark:border-white/[0.05] border-black/[0.05]"
@@ -54,8 +54,8 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
                                     code: ({ node, className, children, ...props }: any) => {
                                         const isInline = !className;
                                         return isInline
-                                            ? <code className="dark:bg-black/40 bg-black/[0.05] dark:border-white/[0.08] border-black/[0.06] border rounded-md px-1.5 py-0.5 text-[0.83em] font-mono dark:text-violet-200/90 text-violet-600/90 shadow-inner" {...props}>{children}</code>
-                                            : <pre className="dark:bg-[#04040a]/90 bg-slate-100/90 rounded-xl p-4.5 mb-4 overflow-x-auto dark:border-white/[0.08] border-black/[0.06] border dark:shadow-[inset_0_2px_12px_rgba(0,0,0,0.6)] shadow-[inset_0_2px_6px_rgba(0,0,0,0.04)]"><code className="font-mono text-sm tracking-tight dark:text-slate-300 text-slate-700 block" {...props}>{children}</code></pre>
+                                            ? <code className="dark:bg-black/40 bg-black/[0.05] dark:border-white/[0.08] border-black/[0.06] border rounded-md px-1.5 py-0.5 text-[0.83em] font-mono dark:text-violet-200/90 text-violet-600/90 shadow-inner break-words" {...props}>{children}</code>
+                                            : <pre className="max-w-full overflow-x-auto dark:bg-[#04040a]/90 bg-slate-100/90 rounded-xl p-3 sm:p-4.5 mb-4 dark:border-white/[0.08] border-black/[0.06] border dark:shadow-[inset_0_2px_12px_rgba(0,0,0,0.6)] shadow-[inset_0_2px_6px_rgba(0,0,0,0.04)]"><code className="font-mono text-[0.75rem] sm:text-sm tracking-tight dark:text-slate-300 text-slate-700 block whitespace-pre" {...props}>{children}</code></pre>
                                     }
                                 }}
                             >

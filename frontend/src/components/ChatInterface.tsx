@@ -1,14 +1,19 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Menu, X, Paperclip, Sparkles, PanelLeftClose, PanelLeft } from "lucide-react";
-import { useRagBackend } from "@/hooks/useRagBackend";
+import { useRagBackend, type ChatMessage, type HistoryEntry } from "@/hooks/useRagBackend";
+import { useFirebase } from "@/components/FirebaseProvider";
+import { useChatSessions } from "@/hooks/useChatSessions";
 import { BackgroundWrapper } from "@/components/BackgroundWrapper";
 import { UploadZone } from "@/components/UploadZone";
+import { DocumentLibrary } from "@/components/DocumentLibrary";
+import { SessionSidebar } from "@/components/SessionSidebar";
 import { MessageBubble } from "@/components/MessageBubble";
 import { QuickActions } from "@/components/QuickActions";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 
 export function ChatInterface() {
     const [isSidebarOpen, setSidebarOpen] = useState(false);        // mobile overlay
@@ -16,19 +21,98 @@ export function ChatInterface() {
     const [isChatActive, setIsChatActive] = useState(false);
     const [inputValue, setInputValue] = useState("");
 
-    const { messages, isTyping, sendMessage } = useRagBackend();
+    const { user, setShowAuthModal } = useFirebase();
+    const { messages, setMessages, isTyping, sendMessage, handleFileUpload, fetchUserDocuments, deleteDocument } = useRagBackend(user?.uid);
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const {
+        sessions,
+        activeSessionId,
+        setActiveSessionId,
+        sessionMessages,
+        createSession,
+        addMessage,
+        deleteSession,
+        startNewChat,
+    } = useChatSessions();
+
     const endOfMessagesRef = useRef<HTMLDivElement>(null);
+    const activeSessionRef = useRef<string | null>(null);
+
+    // Track the active session id in a ref for use in async callbacks
+    useEffect(() => {
+        activeSessionRef.current = activeSessionId;
+    }, [activeSessionId]);
 
     useEffect(() => {
         endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages, isTyping]);
 
-    const handleSend = (text: string) => {
+    // ─── Load messages from Firestore when switching sessions ───
+    useEffect(() => {
+        if (sessionMessages.length > 0) {
+            const hydrated: ChatMessage[] = sessionMessages.map((m) => ({
+                id: m.id,
+                role: m.role,
+                content: m.content,
+                sources: m.sources,
+            }));
+            setMessages(hydrated);
+            setIsChatActive(true);
+        } else if (activeSessionId === null) {
+            // New chat — clear everything
+            setMessages([]);
+            setIsChatActive(false);
+        }
+    }, [sessionMessages, activeSessionId, setMessages]);
+
+    // ─── Build conversation history from current messages ───────
+    const buildHistory = useCallback((): HistoryEntry[] => {
+        return messages
+            .filter((m) => !m.isStreaming && m.content.trim().length > 0)
+            .map((m) => ({
+                role: m.role === "user" ? "user" as const : "assistant" as const,
+                content: m.content,
+            }));
+    }, [messages]);
+
+    // ─── Auth-gated send ────────────────────────────────────────
+    const handleSend = useCallback(async (text: string) => {
         if (!text.trim()) return;
+
+        // Auth gate
+        if (!user) {
+            setShowAuthModal(true);
+            return;
+        }
+
         setIsChatActive(true);
-        sendMessage(text);
         setInputValue("");
-    };
+
+        // Build history BEFORE adding the new message to state
+        const history = buildHistory();
+
+        // Session management: create if needed
+        let sid = activeSessionRef.current;
+        if (!sid) {
+            sid = await createSession(text);
+            if (!sid) return;
+        }
+
+        // Send via RAG backend with conversation history
+        const result = await sendMessage(text, history);
+
+        // Persist both messages to Firestore after streaming completes
+        if (sid) {
+            await addMessage(sid, { role: "user", content: text });
+            if (result) {
+                await addMessage(sid, {
+                    role: "ai",
+                    content: result.answer,
+                    sources: result.sources,
+                });
+            }
+        }
+    }, [user, setShowAuthModal, buildHistory, createSession, sendMessage, addMessage]);
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === "Enter" && !e.shiftKey) {
@@ -37,44 +121,83 @@ export function ChatInterface() {
         }
     };
 
+    const handleInputFocus = () => {
+        if (!user) {
+            setShowAuthModal(true);
+        }
+    };
+
+    // ─── Session actions ────────────────────────────────────────
+    const handleSelectSession = (sessionId: string) => {
+        setActiveSessionId(sessionId);
+        setSidebarOpen(false); // close mobile overlay on selection
+    };
+
+    const handleNewChat = () => {
+        startNewChat();
+        setMessages([]);
+        setIsChatActive(false);
+    };
+
+    const handleDeleteSession = async (sessionId: string) => {
+        await deleteSession(sessionId);
+        if (activeSessionId === sessionId) {
+            setMessages([]);
+            setIsChatActive(false);
+        }
+    };
+
+    // ─── Sidebar content (shared between mobile & desktop) ─────
+    const sidebarContent = (
+        <div className="flex flex-col h-full overflow-hidden">
+            {user ? (
+                <SessionSidebar
+                    sessions={sessions}
+                    activeSessionId={activeSessionId}
+                    onSelectSession={handleSelectSession}
+                    onNewChat={handleNewChat}
+                    onDeleteSession={handleDeleteSession}
+                >
+                    <UploadZone
+                        onFileUpload={handleFileUpload}
+                        onUploadComplete={() => setRefreshTrigger((t) => t + 1)}
+                    />
+                    <DocumentLibrary
+                        userId={user?.uid}
+                        fetchUserDocuments={fetchUserDocuments}
+                        deleteDocument={deleteDocument}
+                        refreshTrigger={refreshTrigger}
+                    />
+                </SessionSidebar>
+            ) : (
+                <div className="flex-1 min-h-0 overflow-y-auto">
+                    {/* Auth-gated UploadZone for unauthenticated users */}
+                    <div onClick={() => setShowAuthModal(true)}>
+                        <div className="pointer-events-none opacity-60">
+                            <UploadZone onFileUpload={handleFileUpload} />
+                        </div>
+                    </div>
+                    <p className="text-center text-xs dark:text-slate-500 text-slate-400 px-4 mt-2">
+                        Sign in to upload documents
+                    </p>
+                </div>
+            )}
+        </div>
+    );
+
     return (
         <BackgroundWrapper>
-            <div className="flex flex-1 w-full overflow-hidden relative">
+            <div className="flex flex-1 w-full h-[100dvh] overflow-hidden relative">
 
                 {/* ═══ Mobile Sidebar Overlay ═══ */}
-                <AnimatePresence>
-                    {isSidebarOpen && (
-                        <>
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                onClick={() => setSidebarOpen(false)}
-                                className="fixed inset-0 dark:bg-black/60 bg-black/30 backdrop-blur-sm z-40 lg:hidden"
-                            />
-                            <motion.aside
-                                initial={{ x: "-100%" }}
-                                animate={{ x: 0 }}
-                                exit={{ x: "-100%" }}
-                                transition={{ type: "spring", damping: 28, stiffness: 260 }}
-                                className="fixed top-0 left-0 h-full w-80 cosmic-glass-strong z-50 flex
-                                    dark:border-r dark:border-white/[0.06]
-                                    border-r border-black/[0.06]"
-                            >
-                                <div className="absolute top-4 right-4 z-10">
-                                    <button
-                                        onClick={() => setSidebarOpen(false)}
-                                        className="p-2 dark:text-slate-500 dark:hover:text-white text-slate-400 hover:text-slate-900
-                                            transition-colors dark:bg-white/5 dark:hover:bg-white/10 bg-black/5 hover:bg-black/10 rounded-full"
-                                    >
-                                        <X className="w-4 h-4" />
-                                    </button>
-                                </div>
-                                <UploadZone />
-                            </motion.aside>
-                        </>
-                    )}
-                </AnimatePresence>
+                <Sheet open={isSidebarOpen} onOpenChange={setSidebarOpen}>
+                    <SheetContent side="left" className="w-[300px] sm:w-[360px] p-0 border-r-0 cosmic-glass-strong dark:bg-black/40 bg-white/40">
+                        <SheetTitle className="sr-only">Menu</SheetTitle>
+                        <div className="flex-1 min-h-0 pt-12 h-full">
+                            {sidebarContent}
+                        </div>
+                    </SheetContent>
+                </Sheet>
 
                 {/* ═══ Desktop Sidebar (collapsible) ═══ */}
                 <motion.aside
@@ -88,7 +211,9 @@ export function ChatInterface() {
                         dark:border-r dark:border-white/[0.06]
                         border-r border-black/[0.06]"
                 >
-                    <UploadZone />
+                    <div className="w-80 h-full">
+                        {sidebarContent}
+                    </div>
                 </motion.aside>
 
                 {/* ═══ Main Content Area ═══ */}
@@ -129,14 +254,14 @@ export function ChatInterface() {
                             </span>
                         </div>
 
-                        {/* Theme Toggle — right side */}
-                        <div className="ml-auto">
+                        {/* Right side — Theme Toggle only (user profile moved to sidebar) */}
+                        <div className="ml-auto flex items-center gap-2">
                             <ThemeToggle />
                         </div>
                     </header>
 
                     {/* Flex Layout Container */}
-                    <div className={`flex flex-col w-full mx-auto transition-all duration-700 ease-out ${isChatActive ? "flex-1 min-h-0 px-6 lg:px-12" : "h-full justify-center px-4 lg:px-8"}`}>
+                    <div className={`flex flex-col w-full mx-auto transition-all duration-700 ease-out ${isChatActive ? "flex-1 min-h-0 px-3 sm:px-6 lg:px-12" : "h-full justify-center px-4 lg:px-8"}`}>
 
                         {/* ═══ Landing Hero ═══ */}
                         <AnimatePresence>
@@ -230,7 +355,7 @@ export function ChatInterface() {
                         <motion.div
                             layout
                             transition={{ type: "spring", damping: 30, stiffness: 200 }}
-                            className={`w-full shrink-0 z-20 relative flex flex-col items-center ${!isChatActive ? "max-w-2xl mx-auto" : "pb-4"}`}
+                            className={`w-full shrink-0 z-20 relative flex flex-col items-center ${!isChatActive ? "max-w-2xl mx-auto pb-[env(safe-area-inset-bottom)] sm:pb-4" : "pb-[calc(1rem+env(safe-area-inset-bottom))] sm:pb-4"}`}
                         >
                             {/* Subtle divider above input when chat is active */}
                             {isChatActive && (
@@ -254,6 +379,7 @@ export function ChatInterface() {
                                         value={inputValue}
                                         onChange={(e) => setInputValue(e.target.value)}
                                         onKeyDown={handleKeyDown}
+                                        onFocus={handleInputFocus}
                                         placeholder="Ask about your documents..."
                                         className="w-full bg-transparent border-none outline-none resize-none px-4 pt-3 pb-2 min-h-[52px] max-h-[160px] text-[0.98rem] leading-relaxed font-medium
                                             dark:text-slate-100 dark:placeholder:text-slate-500

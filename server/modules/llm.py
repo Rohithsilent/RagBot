@@ -32,6 +32,7 @@ Use the provided context as your primary knowledge base, but feel free to enhanc
 ---
 
 💬 **Instructions**:
+- If the user's question references previous conversation, use the conversation history included in the question to provide context-aware answers.
 - Use the document context as a foundation and enrich your answer with clear explanations, examples, or insights.
 - Structure your response well — use bullet points, numbered lists, or headings when appropriate.
 - If the context is relevant but incomplete, supplement with your own knowledge and mention when you're doing so.
