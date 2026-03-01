@@ -1,4 +1,4 @@
-# 🌌 RagBot AI 2.0: Cosmic RAG Platform
+# 🌌 RagBot AI : Cosmic RAG Platform
 
 An enterprise-grade Retrieval-Augmented Generation (RAG) platform with a modern Cosmic Glassmorphism UI.
 
@@ -14,11 +14,23 @@ An enterprise-grade Retrieval-Augmented Generation (RAG) platform with a modern 
 
 ## ✨ Visual Experience
 
-![Landing Page](assets/landing.png)
-![Authenticated Chat](assets/chat.png)
-![Document Library](assets/library.png)
+### Landing Page
+<div align="center">
+  <img src="assets/landing_light.png" alt="Landing Page Light" width="48%" />
+  <img src="assets/landing_dark.png" alt="Landing Page Dark" width="48%" />
+</div>
 
-*(Note: Please ensure your screenshots are saved in the `assets/` folder with the names `landing.png`, `chat.png`, and `library.png`)*
+### Authenticated Chat
+<div align="center">
+  <img src="assets/chat_light.png" alt="Chat Light" width="48%" />
+  <img src="assets/chat_dark.png" alt="Chat Dark" width="48%" />
+</div>
+
+### Auth & Profile
+<div align="center">
+  <img src="assets/auth.png" alt="Auth Gate" width="48%" />
+  <img src="assets/profile.png" alt="Profile Settings" width="48%" />
+</div>
 
 ## 🚀 Feature Highlights
 
