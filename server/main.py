@@ -8,17 +8,15 @@ from modules.llm import get_llm_chain
 from modules.query_handlers import query_chain
 from logger import logger
 
-app = FastAPI(title="RagBot2.0")
+app = FastAPI(title="RagBot2.0", root_path="")
 
-# allow frontend dynamically
-frontend_url = os.environ.get("https://rag-bot-omega.vercel.app", "http://localhost:3000")
-
+# explicit proper CORS middleware first
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[frontend_url],
+    allow_origins=["https://rag-bot-omega.vercel.app", "http://localhost:3000"],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"]
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "X-User-Id", "X-Namespace"]
 )
 
 @app.middleware("http")
@@ -39,7 +37,7 @@ def _get_user_id(x_user_id: Optional[str]) -> str:
 # ═══════════════════════════════════════════════════════════════
 # Upload Docs — upserts into the user's Pinecone namespace
 # ═══════════════════════════════════════════════════════════════
-@app.post("/upload_docs/")
+@app.post("/upload_docs")
 async def upload_docs(
     files: List[UploadFile] = File(...),
     x_user_id: Optional[str] = Header(None),
@@ -60,7 +58,7 @@ async def upload_docs(
 # ═══════════════════════════════════════════════════════════════
 # Ask — queries only within the user's namespace
 # ═══════════════════════════════════════════════════════════════
-@app.post("/ask/")
+@app.post("/ask")
 async def ask_question(
     question: str = Form(...),
     chat_history: str = Form(""),

@@ -50,7 +50,7 @@ export function useRagBackend(userId?: string | null) {
         }
 
         try {
-            const response = await fetch(`${API_BASE}/ask/`, {
+            const response = await fetch(`${API_BASE}/ask`, {
                 method: "POST",
                 body: formData,
                 headers: authHeaders(),
@@ -123,7 +123,7 @@ export function useRagBackend(userId?: string | null) {
         });
 
         try {
-            const response = await fetch(`${API_BASE}/upload_docs/`, {
+            const response = await fetch(`${API_BASE}/upload_docs`, {
                 method: "POST",
                 body: formData,
                 headers: authHeaders(),

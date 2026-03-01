@@ -1,0 +1,14 @@
+[2026-03-01 20:54:25,213] [INFO] -  Listing documents for user 0vpapnL18LMFxguxOGIrBUQ3wKk2 
+[2026-03-01 20:54:27,733] [INFO] -  Listing documents for user 0vpapnL18LMFxguxOGIrBUQ3wKk2 
+[2026-03-01 20:54:54,863] [INFO] -  Listing documents for user t4Wysftp6PhCYrUH2y4GvqTkjsr1 
+[2026-03-01 20:54:56,361] [INFO] -  Listing documents for user t4Wysftp6PhCYrUH2y4GvqTkjsr1 
+[2026-03-01 20:55:06,827] [INFO] -  Received 1 files from user t4Wysftp6PhCYrUH2y4GvqTkjsr1 
+[2026-03-01 20:55:52,908] [INFO] -  Documents added to Pinecone namespace 't4Wysftp6PhCYrUH2y4GvqTkjsr1' 
+[2026-03-01 20:55:52,993] [INFO] -  Listing documents for user t4Wysftp6PhCYrUH2y4GvqTkjsr1 
+[2026-03-01 20:56:30,344] [INFO] -  User query from t4Wysftp6PhCYrUH2y4GvqTkjsr1: what is c# 
+[2026-03-01 20:56:35,882] [INFO] -  query successful 
+[2026-03-01 21:59:48,763] [INFO] -  Listing documents for user t4Wysftp6PhCYrUH2y4GvqTkjsr1 
+[2026-03-01 22:00:46,358] [INFO] -  Listing documents for user t4Wysftp6PhCYrUH2y4GvqTkjsr1 
+[2026-03-01 22:00:47,644] [INFO] -  Listing documents for user t4Wysftp6PhCYrUH2y4GvqTkjsr1 
+[2026-03-01 22:01:34,070] [INFO] -  User query from t4Wysftp6PhCYrUH2y4GvqTkjsr1: write a hello world program in c# 
+[2026-03-01 22:01:40,585] [INFO] -  query successful 
