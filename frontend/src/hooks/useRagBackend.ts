@@ -9,6 +9,7 @@ export interface ChatMessage {
     role: MessageRole;
     content: string;
     isStreaming?: boolean;
+    sources?: string[];
 }
 
 export function useRagBackend() {
@@ -41,6 +42,7 @@ export function useRagBackend() {
 
             const data = await response.json();
             const answer = data.response || "No response text found.";
+            const sources = data.sources || [];
 
             // We simulate streaming effect since the backend returns all at once.
             const aiMsgId = (Date.now() + 1).toString();
@@ -48,7 +50,7 @@ export function useRagBackend() {
 
             setMessages((prev) => [
                 ...prev,
-                { id: aiMsgId, role: "ai", content: "", isStreaming: true },
+                { id: aiMsgId, role: "ai", content: "", isStreaming: true, sources },
             ]);
 
             let currentText = "";

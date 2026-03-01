@@ -39,10 +39,14 @@ export function QuickActions({ onActionClick, onUploadClick }: QuickActionsProps
                     onClick={() => item.action === "upload" ? onUploadClick() : onActionClick(item.action)}
                     whileHover={{ scale: 1.03, y: -1 }}
                     whileTap={{ scale: 0.97 }}
-                    className="flex items-center gap-2.5 px-4.5 py-2.5 rounded-full cosmic-glass border border-white/[0.08] hover:border-violet-400/40 hover:bg-violet-500/[0.06] transition-all duration-300 text-[0.88rem] font-medium tracking-wide text-slate-300 hover:text-white hover:shadow-[0_4px_24px_rgba(139,92,246,0.15)] group"
+                    className="flex items-center gap-2.5 px-4.5 py-2.5 rounded-full cosmic-glass transition-all duration-300 text-[0.88rem] font-medium tracking-wide group
+                        dark:border dark:border-white/[0.08] dark:hover:border-violet-400/40 dark:hover:bg-violet-500/[0.06]
+                        dark:text-slate-300 dark:hover:text-white dark:hover:shadow-[0_4px_24px_rgba(139,92,246,0.15)]
+                        border border-black/[0.06] hover:border-violet-400/30 hover:bg-violet-500/[0.04]
+                        text-slate-600 hover:text-slate-900 hover:shadow-[0_4px_24px_rgba(139,92,246,0.08)]"
                 >
-                    <div className="p-1 rounded-md bg-white/[0.04] group-hover:bg-violet-500/20 transition-colors duration-300">
-                        <item.icon className="w-3.5 h-3.5 text-violet-400/80 group-hover:text-violet-300" />
+                    <div className="p-1 rounded-md dark:bg-white/[0.04] dark:group-hover:bg-violet-500/20 bg-black/[0.03] group-hover:bg-violet-500/10 transition-colors duration-300">
+                        <item.icon className="w-3.5 h-3.5 dark:text-violet-400/80 dark:group-hover:text-violet-300 text-violet-500/70 group-hover:text-violet-500" />
                     </div>
                     {item.label}
                 </motion.button>

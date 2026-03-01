@@ -2,14 +2,14 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-space-grotesk);
+  --font-display: var(--font-outfit);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -49,10 +49,59 @@
 }
 
 /* ═══════════════════════════════════════════════════════
-   COSMIC GLASSMORPHISM — Design Tokens
+   ETHEREAL DAWN — Light Mode Design Tokens
    ═══════════════════════════════════════════════════════ */
 
-:root,
+:root {
+  --radius: 0.75rem;
+
+  /* Warm Ethereal Palette */
+  --background: oklch(0.97 0.008 80);
+  --foreground: oklch(0.15 0.02 260);
+
+  --card: oklch(1.0 0 0 / 0.45);
+  --card-foreground: oklch(0.15 0.02 260);
+
+  --popover: oklch(0.99 0.005 80 / 0.85);
+  --popover-foreground: oklch(0.15 0.02 260);
+
+  --primary: oklch(0.55 0.28 280);
+  --primary-foreground: oklch(0.98 0.005 270);
+
+  --secondary: oklch(0.94 0.01 260);
+  --secondary-foreground: oklch(0.25 0.02 260);
+
+  --muted: oklch(0.93 0.008 260);
+  --muted-foreground: oklch(0.45 0.02 260);
+
+  --accent: oklch(0.50 0.22 290);
+  --accent-foreground: oklch(0.98 0 0);
+
+  --destructive: oklch(0.55 0.22 20);
+  --border: oklch(0.12 0.02 260 / 0.08);
+  --input: oklch(0.12 0.02 260 / 0.06);
+  --ring: oklch(0.55 0.28 280);
+
+  --sidebar: oklch(0.99 0.005 80 / 0.5);
+  --sidebar-foreground: oklch(0.15 0.02 260);
+  --sidebar-primary: oklch(0.55 0.28 280);
+  --sidebar-primary-foreground: oklch(0.98 0.005 270);
+  --sidebar-accent: oklch(0.94 0.01 275);
+  --sidebar-accent-foreground: oklch(0.15 0.02 260);
+  --sidebar-border: oklch(0.12 0.02 260 / 0.06);
+  --sidebar-ring: oklch(0.55 0.28 280);
+
+  /* Ethereal custom tokens */
+  --cosmic-violet: oklch(0.55 0.28 290);
+  --cosmic-indigo: oklch(0.45 0.25 280);
+  --cosmic-deep: oklch(0.97 0.008 80);
+  --cosmic-glow: oklch(0.65 0.15 50);
+}
+
+/* ═══════════════════════════════════════════════════════
+   COSMIC OBSIDIAN — Dark Mode Design Tokens
+   ═══════════════════════════════════════════════════════ */
+
 .dark {
   --radius: 0.75rem;
 
@@ -109,34 +158,39 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  /* Smooth theme transitions on key properties */
+  html {
+    transition: background-color 0.6s ease, color 0.4s ease;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════
-   COSMIC GLASS UTILITIES
+   COSMIC GLASS UTILITIES — Dark Mode
    ═══════════════════════════════════════════════════════ */
 
-.cosmic-glass {
+.dark .cosmic-glass {
   background: rgba(0, 0, 0, 0.40);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.cosmic-glass-strong {
+.dark .cosmic-glass-strong {
   background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(32px);
   -webkit-backdrop-filter: blur(32px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.cosmic-glass-subtle {
+.dark .cosmic-glass-subtle {
   background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.04);
 }
 
-.cosmic-glass-panel {
+.dark .cosmic-glass-panel {
   background: linear-gradient(145deg, rgba(15, 15, 25, 0.6), rgba(5, 5, 10, 0.8));
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
@@ -144,13 +198,54 @@
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.05);
 }
 
+/* ═══════════════════════════════════════════════════════
+   ETHEREAL GLASS UTILITIES — Light Mode
+   ═══════════════════════════════════════════════════════ */
+
+:root:not(.dark) .cosmic-glass {
+  background: rgba(255, 255, 255, 0.40);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+:root:not(.dark) .cosmic-glass-strong {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+:root:not(.dark) .cosmic-glass-subtle {
+  background: rgba(255, 255, 255, 0.30);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+:root:not(.dark) .cosmic-glass-panel {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.65), rgba(245, 245, 250, 0.80));
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+}
+
+/* ═══════════════════════════════════════════════════════
+   DIVIDER & GLOW — Dual Mode
+   ═══════════════════════════════════════════════════════ */
+
 /* Thin gradient divider */
-.cosmic-divider {
+.dark .cosmic-divider {
   background: linear-gradient(90deg, transparent 0%, rgba(139, 92, 246, 0.2) 30%, rgba(139, 92, 246, 0.3) 50%, rgba(139, 92, 246, 0.2) 70%, transparent 100%);
 }
 
-/* The iconic horizon glow */
-.horizon-glow {
+:root:not(.dark) .cosmic-divider {
+  background: linear-gradient(90deg, transparent 0%, rgba(139, 92, 246, 0.1) 30%, rgba(139, 92, 246, 0.15) 50%, rgba(139, 92, 246, 0.1) 70%, transparent 100%);
+}
+
+/* The iconic horizon glow — Dark: Violet/Indigo */
+.dark .horizon-glow {
   position: absolute;
   bottom: -20%;
   left: 50%;
@@ -167,8 +262,29 @@
   z-index: 1;
 }
 
-/* Cosmic title glow */
-.cosmic-title {
+/* Horizon glow — Light: Golden/Warm */
+:root:not(.dark) .horizon-glow {
+  position: absolute;
+  bottom: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140%;
+  height: 70vh;
+  background: radial-gradient(ellipse at center,
+      oklch(0.85 0.12 70 / 0.35) 0%,
+      oklch(0.80 0.08 60 / 0.2) 30%,
+      oklch(0.90 0.04 80 / 0.08) 55%,
+      transparent 75%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ═══════════════════════════════════════════════════════
+   COSMIC TITLE — Dual Mode
+   ═══════════════════════════════════════════════════════ */
+
+.dark .cosmic-title {
   font-family: var(--font-display);
   background: linear-gradient(135deg,
       rgba(255, 255, 255, 1) 0%,
@@ -181,6 +297,24 @@
   filter: drop-shadow(0 0 40px oklch(0.60 0.30 285 / 0.5)) drop-shadow(0 0 80px oklch(0.50 0.25 290 / 0.3));
   letter-spacing: -0.04em;
 }
+
+:root:not(.dark) .cosmic-title {
+  font-family: var(--font-display);
+  background: linear-gradient(135deg,
+      oklch(0.20 0.04 280) 0%,
+      oklch(0.35 0.20 285) 40%,
+      oklch(0.50 0.28 290) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(0 0 30px oklch(0.55 0.25 285 / 0.2)) drop-shadow(0 0 60px oklch(0.50 0.20 290 / 0.1));
+  letter-spacing: -0.04em;
+}
+
+/* ═══════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════ */
 
 /* Pulsing glow border for loading state */
 @keyframes pulse-glow {
@@ -217,7 +351,10 @@
   animation: shimmer 1.5s ease-in-out;
 }
 
-/* Grain overlay for depth */
+/* ═══════════════════════════════════════════════════════
+   GRAIN OVERLAY — Dual Mode
+   ═══════════════════════════════════════════════════════ */
+
 .grain-overlay::after {
   content: '';
   position: absolute;
@@ -226,12 +363,19 @@
   background-repeat: repeat;
   pointer-events: none;
   z-index: 2;
-  opacity: 0.4;
   mix-blend-mode: overlay;
 }
 
+.dark .grain-overlay::after {
+  opacity: 0.4;
+}
+
+:root:not(.dark) .grain-overlay::after {
+  opacity: 0.15;
+}
+
 /* ═══════════════════════════════════════════════════════
-   SCROLLBAR
+   SCROLLBAR — Dual Mode
    ═══════════════════════════════════════════════════════ */
 
 ::-webkit-scrollbar {
@@ -243,33 +387,50 @@
   background: transparent;
 }
 
-::-webkit-scrollbar-thumb {
+/* Dark scrollbar */
+.dark ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.12);
   border-radius: 10px;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.dark ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.22);
 }
 
-/* Firefox scrollbar */
-* {
+/* Light scrollbar */
+:root:not(.dark) ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+}
+
+:root:not(.dark) ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* Firefox scrollbar - dark */
+.dark * {
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
 }
 
+/* Firefox scrollbar - light */
+:root:not(.dark) * {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.12) transparent;
+}
+
 /* ═══════════════════════════════════════════════════════
-   MARKDOWN CONTENT STYLING
+   MARKDOWN CONTENT STYLING — Dark Mode
    ═══════════════════════════════════════════════════════ */
 
-.markdown-content pre {
+.dark .markdown-content pre {
   background: rgba(6, 6, 15, 0.8) !important;
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 12px;
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.markdown-content code:not(pre code) {
+.dark .markdown-content code:not(pre code) {
   background: rgba(0, 0, 0, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 5px;
@@ -277,17 +438,52 @@
   font-size: 0.85em;
 }
 
-.markdown-content a {
+.dark .markdown-content a {
   color: oklch(0.70 0.20 285);
   text-decoration-color: oklch(0.70 0.20 285 / 0.3);
 }
 
-.markdown-content a:hover {
+.dark .markdown-content a:hover {
   color: oklch(0.80 0.22 285);
   text-decoration-color: oklch(0.80 0.22 285 / 0.6);
 }
 
-.markdown-content blockquote {
+.dark .markdown-content blockquote {
   border-left-color: oklch(0.55 0.25 285 / 0.5);
   background: rgba(0, 0, 0, 0.2);
+}
+
+/* ═══════════════════════════════════════════════════════
+   MARKDOWN CONTENT STYLING — Light Mode
+   ═══════════════════════════════════════════════════════ */
+
+:root:not(.dark) .markdown-content pre {
+  background: rgba(240, 240, 248, 0.9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+:root:not(.dark) .markdown-content code:not(pre code) {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 5px;
+  padding: 2px 6px;
+  font-size: 0.85em;
+  color: oklch(0.40 0.20 285);
+}
+
+:root:not(.dark) .markdown-content a {
+  color: oklch(0.45 0.22 285);
+  text-decoration-color: oklch(0.45 0.22 285 / 0.3);
+}
+
+:root:not(.dark) .markdown-content a:hover {
+  color: oklch(0.35 0.25 285);
+  text-decoration-color: oklch(0.35 0.25 285 / 0.6);
+}
+
+:root:not(.dark) .markdown-content blockquote {
+  border-left-color: oklch(0.55 0.25 285 / 0.4);
+  background: rgba(0, 0, 0, 0.03);
 }

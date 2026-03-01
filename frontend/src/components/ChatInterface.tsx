@@ -8,6 +8,7 @@ import { BackgroundWrapper } from "@/components/BackgroundWrapper";
 import { UploadZone } from "@/components/UploadZone";
 import { MessageBubble } from "@/components/MessageBubble";
 import { QuickActions } from "@/components/QuickActions";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function ChatInterface() {
     const [isSidebarOpen, setSidebarOpen] = useState(false);        // mobile overlay
@@ -49,19 +50,22 @@ export function ChatInterface() {
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
                                 onClick={() => setSidebarOpen(false)}
-                                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+                                className="fixed inset-0 dark:bg-black/60 bg-black/30 backdrop-blur-sm z-40 lg:hidden"
                             />
                             <motion.aside
                                 initial={{ x: "-100%" }}
                                 animate={{ x: 0 }}
                                 exit={{ x: "-100%" }}
                                 transition={{ type: "spring", damping: 28, stiffness: 260 }}
-                                className="fixed top-0 left-0 h-full w-80 cosmic-glass-strong border-r border-white/[0.06] z-50 flex"
+                                className="fixed top-0 left-0 h-full w-80 cosmic-glass-strong z-50 flex
+                                    dark:border-r dark:border-white/[0.06]
+                                    border-r border-black/[0.06]"
                             >
                                 <div className="absolute top-4 right-4 z-10">
                                     <button
                                         onClick={() => setSidebarOpen(false)}
-                                        className="p-2 text-slate-500 hover:text-white transition-colors bg-white/5 hover:bg-white/10 rounded-full"
+                                        className="p-2 dark:text-slate-500 dark:hover:text-white text-slate-400 hover:text-slate-900
+                                            transition-colors dark:bg-white/5 dark:hover:bg-white/10 bg-black/5 hover:bg-black/10 rounded-full"
                                     >
                                         <X className="w-4 h-4" />
                                     </button>
@@ -80,7 +84,9 @@ export function ChatInterface() {
                         opacity: isSidebarCollapsed ? 0 : 1,
                     }}
                     transition={{ type: "spring", damping: 28, stiffness: 200 }}
-                    className="hidden lg:flex relative flex-shrink-0 h-full cosmic-glass-strong border-r border-white/[0.06] z-30 overflow-hidden"
+                    className="hidden lg:flex relative flex-shrink-0 h-full cosmic-glass-strong z-30 overflow-hidden
+                        dark:border-r dark:border-white/[0.06]
+                        border-r border-black/[0.06]"
                 >
                     <UploadZone />
                 </motion.aside>
@@ -89,11 +95,16 @@ export function ChatInterface() {
                 <main className="flex-1 flex flex-col relative w-full h-full overflow-hidden">
 
                     {/* Header Bar — always visible */}
-                    <header className="relative top-0 left-0 right-0 h-14 flex items-center px-4 lg:px-6 z-20 bg-black/20 backdrop-blur-xl border-b border-white/[0.04] shrink-0">
+                    <header className="relative top-0 left-0 right-0 h-14 flex items-center px-4 lg:px-6 z-20 shrink-0 transition-colors duration-500
+                        dark:bg-black/20 dark:border-b dark:border-white/[0.04]
+                        bg-white/30 border-b border-black/[0.04]
+                        backdrop-blur-xl"
+                    >
                         {/* Mobile menu button */}
                         <button
                             onClick={() => setSidebarOpen(true)}
-                            className="lg:hidden p-2 text-slate-500 hover:text-white hover:bg-white/10 rounded-lg transition-all mr-2"
+                            className="lg:hidden p-2 dark:text-slate-500 dark:hover:text-white dark:hover:bg-white/10
+                                text-slate-400 hover:text-slate-900 hover:bg-black/5 rounded-lg transition-all mr-2"
                         >
                             <Menu className="w-5 h-5" />
                         </button>
@@ -101,7 +112,8 @@ export function ChatInterface() {
                         {/* Desktop sidebar toggle */}
                         <button
                             onClick={() => setSidebarCollapsed(!isSidebarCollapsed)}
-                            className="hidden lg:flex p-2 text-slate-500 hover:text-white hover:bg-white/10 rounded-lg transition-all mr-3"
+                            className="hidden lg:flex p-2 dark:text-slate-500 dark:hover:text-white dark:hover:bg-white/10
+                                text-slate-400 hover:text-slate-900 hover:bg-black/5 rounded-lg transition-all mr-3"
                             title={isSidebarCollapsed ? "Open sidebar" : "Close sidebar"}
                         >
                             {isSidebarCollapsed
@@ -112,9 +124,14 @@ export function ChatInterface() {
 
                         <div className="flex items-center gap-2">
                             <Sparkles className="w-4 h-4 text-violet-400" />
-                            <span className="text-sm font-semibold tracking-wide text-slate-300">
-                                Rag<span className="text-violet-400">Bot</span>
+                            <span className="text-sm font-semibold tracking-wide dark:text-slate-300 text-slate-700">
+                                Rag<span className="text-violet-400 dark:text-violet-400">Bot</span>
                             </span>
+                        </div>
+
+                        {/* Theme Toggle — right side */}
+                        <div className="ml-auto">
+                            <ThemeToggle />
                         </div>
                     </header>
 
@@ -137,7 +154,10 @@ export function ChatInterface() {
                                         transition={{ delay: 0.1, duration: 0.6 }}
                                         className="mb-6"
                                     >
-                                        <div className="w-16 h-16 rounded-2xl cosmic-glass flex items-center justify-center border border-white/[0.08]">
+                                        <div className="w-16 h-16 rounded-2xl cosmic-glass flex items-center justify-center
+                                            dark:border dark:border-white/[0.08]
+                                            border border-black/[0.06]"
+                                        >
                                             <Sparkles className="w-8 h-8 text-violet-400" />
                                         </div>
                                     </motion.div>
@@ -155,7 +175,7 @@ export function ChatInterface() {
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: 0.25, duration: 0.5 }}
-                                        className="text-base md:text-lg text-slate-500 font-normal tracking-wide text-center max-w-md"
+                                        className="text-base md:text-lg dark:text-slate-500 text-slate-500 font-normal tracking-wide text-center max-w-md"
                                     >
                                         Your intelligent document companion — upload, ask, understand.
                                     </motion.p>
@@ -185,7 +205,11 @@ export function ChatInterface() {
                                                 className="flex w-full justify-start mb-6"
                                             >
                                                 <div className="flex gap-3 items-center">
-                                                    <div className="w-8 h-8 rounded-full cosmic-glass border border-white/[0.08] flex items-center justify-center">
+                                                    <div className="w-8 h-8 rounded-full cosmic-glass
+                                                        dark:border dark:border-white/[0.08]
+                                                        border border-black/[0.06]
+                                                        flex items-center justify-center"
+                                                    >
                                                         <Sparkles className="w-3.5 h-3.5 text-violet-400 animate-pulse" />
                                                     </div>
                                                     <div className="flex gap-1.5 px-4 py-3 cosmic-glass rounded-2xl">
@@ -215,16 +239,25 @@ export function ChatInterface() {
 
                             <div className="relative w-full group">
                                 {/* Glow layer — pulses when AI is thinking */}
-                                <div className={`absolute -inset-[2px] rounded-2xl bg-gradient-to-r from-violet-600/30 via-indigo-500/20 to-violet-600/30 blur-xl transition-opacity duration-700 z-0 ${isTyping ? "opacity-80 input-glow-pulse" : "opacity-0 group-hover:opacity-40"}`} />
+                                <div className={`absolute -inset-[2px] rounded-2xl blur-xl transition-opacity duration-700 z-0
+                                    dark:bg-gradient-to-r dark:from-violet-600/30 dark:via-indigo-500/20 dark:to-violet-600/30
+                                    bg-gradient-to-r from-violet-400/20 via-indigo-400/15 to-violet-400/20
+                                    ${isTyping ? "opacity-80 input-glow-pulse" : "opacity-0 group-hover:opacity-40"}`}
+                                />
 
                                 {/* Input container */}
-                                <div className="relative z-10 cosmic-glass-panel rounded-2xl flex flex-col p-1.5 focus-within:shadow-[0_8px_40px_rgba(139,92,246,0.3)] focus-within:border-violet-500/50 transition-all duration-300">
+                                <div className="relative z-10 cosmic-glass-panel rounded-2xl flex flex-col p-1.5 transition-all duration-300
+                                    dark:focus-within:shadow-[0_8px_40px_rgba(139,92,246,0.3)] dark:focus-within:border-violet-500/50
+                                    focus-within:shadow-[0_8px_40px_rgba(139,92,246,0.15)] focus-within:border-violet-400/40"
+                                >
                                     <textarea
                                         value={inputValue}
                                         onChange={(e) => setInputValue(e.target.value)}
                                         onKeyDown={handleKeyDown}
                                         placeholder="Ask about your documents..."
-                                        className="w-full bg-transparent text-slate-100 placeholder:text-slate-500 border-none outline-none resize-none px-4 pt-3 pb-2 min-h-[52px] max-h-[160px] text-[0.98rem] leading-relaxed font-medium"
+                                        className="w-full bg-transparent border-none outline-none resize-none px-4 pt-3 pb-2 min-h-[52px] max-h-[160px] text-[0.98rem] leading-relaxed font-medium
+                                            dark:text-slate-100 dark:placeholder:text-slate-500
+                                            text-slate-800 placeholder:text-slate-400"
                                         rows={1}
                                     />
 
@@ -238,7 +271,9 @@ export function ChatInterface() {
                                                     setSidebarCollapsed(false);
                                                 }
                                             }}
-                                            className="p-2 text-slate-500 hover:text-violet-300 hover:bg-violet-500/10 rounded-lg transition-all duration-200"
+                                            className="p-2 dark:text-slate-500 dark:hover:text-violet-300 dark:hover:bg-violet-500/10
+                                                text-slate-400 hover:text-violet-500 hover:bg-violet-500/[0.06]
+                                                rounded-lg transition-all duration-200"
                                             title="Attach documents"
                                         >
                                             <Paperclip className="w-5 h-5" />
@@ -246,7 +281,11 @@ export function ChatInterface() {
                                         <button
                                             onClick={() => handleSend(inputValue)}
                                             disabled={!inputValue.trim() || isTyping}
-                                            className="p-2.5 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 text-white hover:shadow-[0_0_30px_rgba(139,92,246,0.6)] disabled:from-white/[0.04] disabled:to-white/[0.02] disabled:text-slate-600 disabled:shadow-none disabled:cursor-not-allowed transition-all duration-300 transform active:scale-95"
+                                            className="p-2.5 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 text-white hover:shadow-[0_0_30px_rgba(139,92,246,0.6)]
+                                                disabled:from-white/[0.04] disabled:to-white/[0.02]
+                                                dark:disabled:text-slate-600 disabled:text-slate-400
+                                                disabled:shadow-none disabled:cursor-not-allowed
+                                                transition-all duration-300 transform active:scale-95"
                                         >
                                             <Send className="w-4 h-4" />
                                         </button>
