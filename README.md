@@ -1,178 +1,133 @@
-# 🧠 Modular RAG PDF Chatbot with FastAPI, ChromaDB & Streamlit
+# 🌌 RagBot AI 2.0: Cosmic RAG Platform
 
-## 🎥 Watch the Tutorial
+An enterprise-grade Retrieval-Augmented Generation (RAG) platform with a modern Cosmic Glassmorphism UI.
 
-[![Watch the video](assets/ragbot2.0.png)](https://youtu.be/TxtK6NUUklQ)
+<div align="left">
+  <img src="https://img.shields.io/badge/Next.js_15-000000?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js 15" />
+  <img src="https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi" alt="FastAPI" />
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS_v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Firebase_Auth-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase Auth" />
+  <img src="https://img.shields.io/badge/Pinecone-000000?style=for-the-badge&logo=pinecone&logoColor=white" alt="Pinecone" />
+  <img src="https://img.shields.io/badge/Groq_LLaMA_3-F55036?style=for-the-badge&logo=groq&logoColor=white" alt="Groq" />
+</div>
 
-This project is a modular **Retrieval-Augmented Generation (RAG)** application that allows users to upload PDF documents and chat with an AI assistant that answers queries based on the document content. It features a microservice architecture with a decoupled **FastAPI backend** and **Streamlit frontend**, using **ChromaDB** as the vector store and **Groq's LLaMA3 model** as the LLM.
+## ✨ Visual Experience
 
----
+![Landing Page](assets/landing.png)
+![Authenticated Chat](assets/chat.png)
+![Document Library](assets/library.png)
 
-## 📂 Project Structure
+*(Note: Please ensure your screenshots are saved in the `assets/` folder with the names `landing.png`, `chat.png`, and `library.png`)*
 
-```
-ragbot2.0/
-├── client/         # Streamlit Frontend
-│   |──components/
-|   |  |──chatUI.py
-|   |  |──history_download.py
-|   |  |──upload.py
-|   |──utils/
-|   |  |──api.py
-|   |──app.py
-|   |──config.py
-├── server/         # FastAPI Backend
-│   ├── chroma_store/ ....after run
-|   |──modules/
-│      ├── load_vectorestore.py
-│      ├── llm.py
-│      ├── pdf_handler.py
-│      ├── query_handlers.py
-|   |──uploaded_pdfs/ ....after run
-│   ├── logger.py
-│   └── main.py
-└── README.md
-```
+## 🚀 Feature Highlights
 
----
+- 🌙 **Seamless Theme Engine**: Fluid transition between "Cosmic Obsidian" (Dark) and "Ethereal Dawn" (Light) modes.
+- 🔐 **Secure Authentication**: Firebase-powered Google and Email login with a glassmorphic Auth Gate.
+- 🛡️ **Multi-Tenant Privacy**: Advanced document isolation using Pinecone Namespacing—User A can never access User B's documents.
+- 🧠 **Context-Aware Memory**: Persistent chat sessions stored in Firestore with full conversation history sent to the LLM.
+- ⚡ **Lightning-Fast Streaming**: Real-time LLaMA 3 responses via Groq with a typewriter UI effect.
 
-## ✨ Features
+## 🛠️ Installation & Local Setup
 
-- 📄 Upload and parse PDFs
-- 🧠 Embed document chunks with HuggingFace embeddings
-- 💂️ Store embeddings in ChromaDB
-- 💬 Query documents using LLaMA3 via Groq
-- 🌍 Microservice architecture (Streamlit client + FastAPI server)
-
----
-
-## 🎓 How RAG Works
-
-Retrieval-Augmented Generation (RAG) enhances LLMs by injecting external knowledge. Instead of relying solely on pre-trained data, the model retrieves relevant information from a vector database (like ChromaDB) and uses it to generate accurate, context-aware responses.
-cd server
->> C:\Users\91830\AppData\Local\Programs\Python\Python310\python.exe -m uvicorn main:app --reload
----
-
-## 📊 Application Diagram
-
-📄 [Download the Full Architecture PDF](assets/ragbot2.0.pdf)
-
----
-
-## 🚀 Getting Started Locally
-
-### 1. Clone the Repository
+### Step 1: Clone & Setup
 
 ```bash
-git clone https://github.com/snsupratim/RagBot-2.0.git
+git clone https://github.com/your-username/RagBot-2.0.git
 cd RagBot-2.0
 ```
 
-### 2. Setup the Backend (FastAPI)
+### Step 2: Backend (FastAPI)
 
-```bash
-cd server
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-
-# Set your Groq API Key (.env)
-GROQ_API_KEY="your_key_here"
-
-# Run the FastAPI server
-uvicorn main:app --reload
-```
-
-### 3. Setup the Frontend (Streamlit)
-
-```bash
-cd ../client
-pip install -r requirements.txt  # if you use a separate venv for client
-streamlit run app.py
-```
-
----
-
-## 🌐 API Endpoints (FastAPI)
-
-- `POST /upload_pdfs/` — Upload PDFs and build vectorstore
-- `POST /ask/` — Send a query and receive answers
-
-Testable via Postman or directly from the Streamlit frontend.
-
----
-
-## 🚧 TODO
-
-- [ ] Add authentication for endpoints
-- [ ] Dockerize the project
-- [ ] Add support for more file types
-
----
-
-## 🌟 Credits
-
-- [LangChain](https://www.langchain.com/)
-- [ChromaDB](https://www.trychroma.com/)
-- [Groq](https://groq.com/)
-- [Streamlit](https://streamlit.io/) (Legacy)
-- [Next.js & Vercel](https://vercel.com/) (Production UI)
-- [Firebase](https://firebase.google.com/)
-
----
-
-## 🚢 Production Deployment
-
-RagBot-2.0 is fully decoupled, meaning the frontend and backend are deployed separately.
-
-### 1. Frontend (Next.js & Vercel)
-Deploy the `/frontend` directory seamlessly on **Vercel**:
-1. Connect your repository to Vercel and set the Root Directory to `frontend`.
-2. Add the following **Environment Variables** in Vercel:
-   ```env
-   NEXT_PUBLIC_API_URL=https://your-backend-url.onrender.com
-   NEXT_PUBLIC_FIREBASE_API_KEY=xxx
-   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=xxx
-   NEXT_PUBLIC_FIREBASE_PROJECT_ID=xxx
-   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=xxx
-   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=xxx
-   NEXT_PUBLIC_FIREBASE_APP_ID=xxx
-   NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=xxx
+1. Navigate to `/server`.
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
    ```
-3. Deploy.
+3. Activate the virtual environment:
+   - **Windows:** `venv\Scripts\activate`
+   - **Mac/Linux:** `source venv/bin/activate`
+4. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+5. Configure the `.env` file in the `/server` directory:
+   ```env
+   OPENAI_API_KEY=your_openai_api_key
+   GROQ_API_KEY=your_groq_api_key
+   PINECONE_API_KEY=your_pinecone_api_key
+   PINECONE_INDEX_NAME=your_pinecone_index_name
+   ```
+6. Run the server:
+   ```bash
+   uvicorn main:app --reload
+   ```
 
-### 2. Backend (FastAPI & Render/Heroku)
-Deploy the `/server` directory to a platform like **Render**, **Railway**, or **Heroku**:
-1. Ensure the platform uses the provided `Procfile` (`web: uvicorn main:app --host 0.0.0.0 --port $PORT`).
+### Step 3: Frontend (Next.js)
+
+1. Navigate to `/frontend`.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Configure `frontend/.env.local` with Firebase credentials and the backend API URL:
+   ```env
+   NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project_id.appspot.com
+   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+   NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+   NEXT_PUBLIC_API_URL=http://localhost:8000
+   ```
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+## 🚢 Production Deployment Guide
+
+### Frontend Deployment (Vercel)
+1. Push your code to GitHub.
+2. Import the project in Vercel.
+3. Configure the Root Directory to `frontend`.
+4. Ensure the Framework Preset is set to **Next.js**.
+5. Add all the environment variables from your `.env.local` file to the Vercel dashboard.
+6. Deploy!
+
+### Backend Deployment (Render / Railway)
+1. In your hosting platform, create a new Web Service from your repository.
 2. Set the Root Directory to `server`.
-3. Add the following **Environment Variables**:
-   ```env
-   PINECONE_API_KEY=xxx
-   PINECONE_INDEX_NAME=xxx
-   GROQ_API_KEY=xxx
-   FRONTEND_URL=https://your-frontend-url.vercel.app  # Important for CORS
-   ```
-4. Deploy.
+3. Build Command: `pip install -r requirements.txt`
+4. Start Command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+   *(Or rely on a `Procfile` if applicable: `web: uvicorn main:app --host 0.0.0.0 --port $PORT`)*
+5. Add your backend `.env` variables to the dashboard.
+6. Deploy!
 
-### 3. Database (Firebase Firestore Rules)
-Deploy the following `firestore.rules` snippet to secure your active chat sessions and documents:
+### Security
+
+Make sure to protect your user's chat history with proper Firebase Firestore Security Rules. Navigate to the Firestore Database settings in the Firebase Console and deploy the following:
+
 ```javascript
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /sessions/{sessionId} {
-      allow read, write: if request.auth != null && request.auth.uid == resource.data.userId || request.auth.uid == request.resource.data.userId;
+      allow read, write: if request.auth != null && (request.auth.uid == resource.data.userId || request.auth.uid == request.resource.data.userId);
+    }
+    match /{document=**} {
+      allow read, write: if false; // Deny all other access by default
     }
   }
 }
 ```
 
----
+## 📁 Repository Structure
 
-## ✉️ Contact
-
-For questions or suggestions, open an issue or contact at [snsupratim@gmail.com]
-
----
-
-> Happy Building RAGbots! 🚀
+```text
+RagBot-2.0/
+├── frontend/   # Next.js 15 Client
+├── server/     # FastAPI Backend & RAG Modules
+├── assets/     # Branding & Screenshots
+└── README.md
+```
