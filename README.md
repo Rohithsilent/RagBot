@@ -143,3 +143,14 @@ RagBot-2.0/
 ├── assets/     # Branding & Screenshots
 └── README.md
 ```
+
+## 📄 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+  <h3>✨ Forged in the Cosmos by <strong>Rohith</strong></h3>
+  <p><i>Keep exploring, keep building.</i> 🚀</p>
+</div>
