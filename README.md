@@ -9,7 +9,7 @@ An enterprise-grade Retrieval-Augmented Generation (RAG) platform with a modern 
   <img src="https://img.shields.io/badge/Tailwind_CSS_v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
   <img src="https://img.shields.io/badge/Firebase_Auth-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase Auth" />
   <img src="https://img.shields.io/badge/Pinecone-000000?style=for-the-badge&logo=pinecone&logoColor=white" alt="Pinecone" />
-  <img src="https://img.shields.io/badge/Groq_LLaMA_3-F55036?style=for-the-badge&logo=groq&logoColor=white" alt="Groq" />
+  <img src="https://img.shields.io/badge/Google_Gemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white" alt="Google Gemini" />
 </div>
 
 ## ✨ Visual Experience
@@ -38,7 +38,7 @@ An enterprise-grade Retrieval-Augmented Generation (RAG) platform with a modern 
 - 🔐 **Secure Authentication**: Firebase-powered Google and Email login with a glassmorphic Auth Gate.
 - 🛡️ **Multi-Tenant Privacy**: Advanced document isolation using Pinecone Namespacing—User A can never access User B's documents.
 - 🧠 **Context-Aware Memory**: Persistent chat sessions stored in Firestore with full conversation history sent to the LLM.
-- ⚡ **Lightning-Fast Streaming**: Real-time LLaMA 3 responses via Groq with a typewriter UI effect.
+- ⚡ **Lightning-Fast Responses**: Intelligent problem-solving using Gemini 2.5 Flash from Google with a smooth typewriter UI effect.
 
 ## 🛠️ Installation & Local Setup
 
@@ -66,7 +66,7 @@ cd RagBot-2.0
 5. Configure the `.env` file in the `/server` directory:
    ```env
    OPENAI_API_KEY=your_openai_api_key
-   GROQ_API_KEY=your_groq_api_key
+   GOOGLE_API_KEY=your_google_api_key
    PINECONE_API_KEY=your_pinecone_api_key
    PINECONE_INDEX_NAME=your_pinecone_index_name
    ```
