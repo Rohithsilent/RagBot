@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, Menu, X, Paperclip, Sparkles, PanelLeftClose, PanelLeft } from "lucide-react";
+import { Send, Menu, X, Paperclip, Sparkles, PanelLeftClose, PanelLeft, ArrowUp, Loader2 } from "lucide-react";
 import { useRagBackend, type ChatMessage, type HistoryEntry } from "@/hooks/useRagBackend";
 import { useFirebase } from "@/components/FirebaseProvider";
 import { useChatSessions } from "@/hooks/useChatSessions";
@@ -371,51 +371,56 @@ export function ChatInterface() {
                                 />
 
                                 {/* Input container */}
-                                <div className="relative z-10 cosmic-glass-panel rounded-2xl flex flex-col p-1.5 transition-all duration-300
-                                    dark:focus-within:shadow-[0_8px_40px_rgba(139,92,246,0.3)] dark:focus-within:border-violet-500/50
-                                    focus-within:shadow-[0_8px_40px_rgba(139,92,246,0.15)] focus-within:border-violet-400/40"
+                                <div className="relative z-10 flex items-center pr-1 pl-1 py-1 transition-all duration-300 rounded-[28px] border
+                                    dark:bg-white/[0.04] dark:border-white/10 dark:focus-within:border-white/20 dark:focus-within:bg-white/[0.06]
+                                    bg-black/[0.02] border-black/10 focus-within:border-black/20 focus-within:bg-white
+                                    backdrop-blur-xl shadow-sm"
                                 >
+                                    <button
+                                        onClick={() => {
+                                            // On mobile open overlay, on desktop toggle sidebar
+                                            if (window.innerWidth < 1024) {
+                                                setSidebarOpen(true);
+                                            } else {
+                                                setSidebarCollapsed(false);
+                                            }
+                                        }}
+                                        className="p-2.5 ml-1 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 rounded-full transition-colors shrink-0"
+                                        title="Attach documents"
+                                    >
+                                        <Paperclip className="w-5 h-5" />
+                                    </button>
+
                                     <textarea
                                         value={inputValue}
                                         onChange={(e) => setInputValue(e.target.value)}
                                         onKeyDown={handleKeyDown}
                                         onFocus={handleInputFocus}
                                         placeholder="Ask about your documents..."
-                                        className="w-full bg-transparent border-none outline-none resize-none px-4 pt-3 pb-2 min-h-[52px] max-h-[160px] text-[0.98rem] leading-relaxed font-medium
+                                        className="flex-1 bg-transparent border-none outline-none resize-none px-2 py-3.5 min-h-[50px] max-h-[160px] text-[0.98rem] leading-relaxed font-medium focus:ring-0
                                             dark:text-slate-100 dark:placeholder:text-slate-500
                                             text-slate-800 placeholder:text-slate-400"
                                         rows={1}
                                     />
 
-                                    <div className="flex items-center justify-between px-2 pb-1">
-                                        <button
-                                            onClick={() => {
-                                                // On mobile open overlay, on desktop toggle sidebar
-                                                if (window.innerWidth < 1024) {
-                                                    setSidebarOpen(true);
-                                                } else {
-                                                    setSidebarCollapsed(false);
-                                                }
-                                            }}
-                                            className="p-2 dark:text-slate-500 dark:hover:text-violet-300 dark:hover:bg-violet-500/10
-                                                text-slate-400 hover:text-violet-500 hover:bg-violet-500/[0.06]
-                                                rounded-lg transition-all duration-200"
-                                            title="Attach documents"
-                                        >
-                                            <Paperclip className="w-5 h-5" />
-                                        </button>
-                                        <button
-                                            onClick={() => handleSend(inputValue)}
-                                            disabled={!inputValue.trim() || isTyping}
-                                            className="p-2.5 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 text-white hover:shadow-[0_0_30px_rgba(139,92,246,0.6)]
-                                                disabled:from-white/[0.04] disabled:to-white/[0.02]
-                                                dark:disabled:text-slate-600 disabled:text-slate-400
-                                                disabled:shadow-none disabled:cursor-not-allowed
-                                                transition-all duration-300 transform active:scale-95"
-                                        >
-                                            <Send className="w-4 h-4" />
-                                        </button>
-                                    </div>
+                                    <motion.button
+                                        onClick={() => handleSend(inputValue)}
+                                        disabled={!inputValue.trim() || isTyping}
+                                        animate={{
+                                            scale: 1,
+                                            opacity: 1
+                                        }}
+                                        whileHover={(!inputValue.trim() || isTyping) ? {} : { scale: 1.05 }}
+                                        whileTap={(!inputValue.trim() || isTyping) ? {} : { scale: 0.95 }}
+                                        transition={{ duration: 0.2 }}
+                                        className={`flex items-center justify-center w-9 h-9 shrink-0 rounded-full mr-1.5 transition-colors duration-300
+                                            ${(!inputValue.trim() || isTyping)
+                                                ? "bg-black/5 dark:bg-neutral-700/50 text-black/30 dark:text-neutral-500"
+                                                : "bg-black dark:bg-white text-white dark:text-black"
+                                            }`}
+                                    >
+                                        {isTyping ? <Loader2 className="w-5 h-5 animate-spin" /> : <ArrowUp className="w-5 h-5" strokeWidth={2.5} />}
+                                    </motion.button>
                                 </div>
                             </div>
 

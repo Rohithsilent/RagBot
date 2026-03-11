@@ -10,7 +10,7 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 def get_llm_chain(retriever):
     llm = ChatGoogleGenerativeAI(
-        model="gemini-2.5-flash",
+        model="gemini-3.1-flash-lite-preview",
         google_api_key=GOOGLE_API_KEY,
         temperature=0.2,
         safety_settings={
