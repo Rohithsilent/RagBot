@@ -121,5 +121,3 @@ groq.BadRequestError: Error code: 400 - {'error': {'message': 'Organization has 
 [2026-03-02 11:35:16,834] [INFO] -  Listing documents for user t4Wysftp6PhCYrUH2y4GvqTkjsr1 
 [2026-03-02 11:35:21,210] [INFO] -  User query from t4Wysftp6PhCYrUH2y4GvqTkjsr1: Summarize the uploaded documents 
 [2026-03-02 11:35:29,723] [INFO] -  query successful 
-[2026-03-02 12:06:22,926] [INFO] -  Listing documents for user 0vpapnL18LMFxguxOGIrBUQ3wKk2 
-[2026-03-02 12:06:24,561] [INFO] -  Listing documents for user 0vpapnL18LMFxguxOGIrBUQ3wKk2 
